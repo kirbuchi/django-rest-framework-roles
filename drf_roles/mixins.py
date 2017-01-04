@@ -1,8 +1,12 @@
+from django.db.utils import OperationalError
 from django.conf import settings
 from django.contrib.auth.models import Group
 
 # Default settings
-DEFAULT_GROUPS = [group.name.lower() for group in Group.objects.all()]
+try:
+    DEFAULT_GROUPS = [group.name.lower() for group in Group.objects.all()]
+except OperationalError:
+    DEFAULT_GROUPS = []
 DEFAULT_REGISTRY = (
     "get_queryset",
     "get_serializer_class",
